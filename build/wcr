@@ -1,0 +1,26 @@
+#!/usr/bin/perl -w
+
+use File::Find;
+use strict;
+use warnings;
+
+my @search = @ARGV; push @search, '.' if @search == 0;
+  
+my $lines_all = 0;
+my $words_all = 0;
+my $chars_all = 0;
+
+find(\&wc, @search);
+
+print "Total: lines $lines_all, words $words_all, chars $chars_all\n";
+
+sub wc
+  {
+  return if !-f $_;
+  my $rc = `wc $_`;
+  $rc =~ /^\s+(\d+)\s+(\d+)\s+(\d+)/;
+  print "$rc";
+  $lines_all += $1;
+  $words_all += $2;
+  $chars_all += $3;
+  }

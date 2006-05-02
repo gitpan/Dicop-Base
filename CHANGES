@@ -1,0 +1,80 @@
+
+=pod
+
+=head1 History revision for DiCoP-Base
+
+This document details the complete changes from v3.01 onwards.
+
+See the CHANGES-3.01 file and the CHANGES files in the DiCoP-Server package
+for the full version history.
+
+=head2 2006-05-03 (Base v3.02)
+
+No functional changes:
+
+=over 2
+
+=item fixed
+
+	require Math::BigInt v1.77
+	Makefile.PL: use YAML to generate better META.yml
+	Makefile.PL: use PREREQ_FATAL
+	call output() with $self as first param when not being able to load
+	  Linux::Cpuinfo
+	fix (c) dates, contact address etc
+	make a non-beta version for release
+	add a SIGNATURE again (for CPAN release)
+	wcr lib: Total: lines 8734, words 30983, chars 222455
+	1499 tests
+
+=back
+
+=head2 2005-04-20 (Base v3.01 build 3)
+
+=over 2
+
+=item fixed
+
+	require Math::BigInt v1.76 in Makefile.PL
+	wcr lib: Total: lines 8733, words 30972, chars 222395
+	1499 tests ()
+
+=back
+
+=head2 2005-04-18 (Base v3.01 build 2)
+
+=over 2
+
+=item fixed
+
+	require Net::Server v0.86 in Makefile.PL
+	add doc in Dicop::Connect for _load_connector()
+	add doc in Dicop::Base for write_file()
+	wcr lib: Total: lines 8733, words 30972, chars 222395
+	1499 tests ()
+
+=back
+
+=head2 2005-02-16 (Base v3.01 build 1)
+
+=over 2
+
+=item fixed
+
+	start version 3.01
+	wcr lib: Total: lines 8711, words 30863, chars 221535
+	1499 tests ()
+
+=back
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de/> for more information.
+
+=cut

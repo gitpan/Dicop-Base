@@ -1,0 +1,97 @@
+#############################################################################
+#
+# objects.def - define fields of the Dicop::Data objects.
+
+# Two sample entries:
+
+{
+  class = Dicop::Item::Subclass
+  # old style
+  fields = " name => { def => 'name', maxlen => 128, editable => 1, help => 'The name of the object', type => 'string' }, description => { maxlen => 256, editable => 1, help => 'A short description of the object', type => 'string', }"
+  # support ',' as delimiter
+  fake_keys = "size,more"
+}
+
+{
+  class = Dicop::Item::SubSubclass
+  # new
+  fields => {
+    name => { noadd => 1, def => 'name', maxlen => 128, editable => 1, help => 'The name of the object', type => 'string' }, 
+    description => { maxlen => 256, editable => 1, help => 'A short description of the object', type => 'string', },
+    some_int => { editable => 1, type => 'int', def => '3', min => 5, max => 9, },
+    myip => { noadd => 1, editable => 1, type => 'ip', def => '' },
+    # some comment
+    mymask => { noadd => 1, editable => 1, type => 'mask', def => '' },
+    myitem => { noadd => 1, type => 'subclass_id', def => '1', filter => 'type_simple' },
+    myclass => { noadd => 1, type => 'Math::BigInt', def => '12', min => 8, max => 13 },
+    mytime => { noadd => 1, type => 'time', def => '123456789' },
+    mylist => { noadd => 1, type => 'list', def => 'foo, bar' },
+    changer => { changeable => 1 },
+    my_virt => { virtual => 1, editrank => 3, def => 2, min => 1, max => 8 },
+  }
+  help = "Some help"
+  include = "##include_some.inc##"
+  # support ', ' as delimiter
+  # doubles are silently dropped
+  fake_keys = "size, supersize, size"
+}
+
+{
+  class = Dicop::Handler::Foo
+  # new
+  fields => {
+    name => { def => 'name', maxlen => 128, editable => 1, help => 'The name of the object', type => 'string' }, 
+    description => { maxlen => 256, editable => 1, help => 'A short description of the object', type => 'string', },
+    some_int => { 
+      editable => 1,
+      editrank => 2,
+      addrank => 2,
+      editindend => 1,
+      addindend => 1,
+      type => 'bitmask',
+      def => '2',
+      valid => [
+        0, foo => 'foobar',
+	1, bar => 'barfoo',
+	],
+      description => 'Some text here',
+      },
+    some_more_int => { noadd => 1, editable => 1, type => 'int', def => '5' },
+    some_optional => {
+      editable => 1,
+      type => 'int',
+      def => '5',
+      addoption => { 0 => 'More', },
+      editoption => { 0 => 'More', },
+      },
+    myip => { editable => 1, type => 'ip', def => '' },
+    mymask => { 
+      editable => 1, 
+      type => 'mask', 
+      def => '', 
+    },
+    pwd => { editable => 1, def => '', type => 'pwd', },
+    pwdrepeat => { editable => 1, def => '', type => 'pwd', },
+  }
+}
+
+{
+  class = Dicop::Item::SubSubSubclass
+  # new
+  fields => {
+    name => { def => 'name', maxlen => 128, editable => 1, help => 'The name of the object', type => 'string' }, 
+    description => { maxlen => 256, editable => 1, help => 'A short description of the object/item', type => 'string', },
+  }
+}
+
+# AUTHOR
+#
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+#
+# DiCoP is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License version 2 as published by the Free
+# Software Foundation.
+#
+# See L<http://www.bsi.de/> for more information.
+#
+

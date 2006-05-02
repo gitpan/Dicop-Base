@@ -1,0 +1,158 @@
+
+# include file for dicopd and dicopp, as well as client
+
+use Dicop::Event qw/logger/;
+use File::Spec;
+use POSIX ();			# () to save memory on imported symbols!
+
+use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK);
+use Socket qw/SOCK_DGRAM/;
+
+##############################################################################
+# some parts from Net::Server::Daemonize (don't want to "use" it, because the
+# client should not need to rely on this package)
+
+package main;
+
+sub is_root_user () {
+  my $id = get_uid('root');
+  return ( ! defined($id) || $< == $id || $> == $id );
+}
+
+### get the uid for the passed user
+sub get_uid ($) {
+  my $user = shift;
+  my $uid  = undef;
+
+  if( $user =~ /^\d+$/ ){
+    $uid = $user;
+  }else{
+    $uid = getpwnam($user);
+  }
+
+  die "Error: Cannot change user, no such user \"$user\" - check config. Aborting.\n" unless defined $uid;
+
+  $uid;
+}
+
+### get all of the gids that this group is (space delimited)
+sub get_gid {
+  my @gid  = ();
+
+  foreach my $group ( split( /[, ]+/, join(" ",@_) ) ){
+    if( $group =~ /^\d+$/ ){
+      push @gid, $group;
+    }else{
+      my $id = getgrnam($group);
+      die "Error: Cannot change group, no such group \"$group\" - check config. Aborting.\n" unless defined $id;
+      push @gid, $id;
+    }
+  }
+
+  die "No group found in arguments.\n" unless @gid;
+
+  return join(" ",$gid[0],@gid);
+}
+
+### change the process to run as this uid
+sub set_uid {
+  my $uid = get_uid( shift() );
+  $< = $> = $uid;
+  if( $< != $uid ){
+    die "Couldn't become uid \"$uid\"\n";
+  }
+  my $result = POSIX::setuid( $uid );
+  if( ! defined($result)
+      || $result == -1) {
+     # man setuid says: 0 for success, -1 for failure
+    die ("Couldn't POSIX::setuid to \"$uid\", result was '$result': [$!] \n");
+  }
+  return 1;
+}
+
+### change the process to run as this gid(s)
+### multiple groups must be space or comma delimited
+sub set_gid {
+  my $gids = get_gid( @_ );
+  my $gid  = (split(/\s+/,$gids))[0];
+  $) = $gids;
+  $( = $gid;
+  my $result = (split(/\s+/,$())[0];
+  if( $result != $gid ) {
+    die "Couldn't become gid \"$gid\" ($result) - you probably need to be root to do this.\n";
+  }
+  POSIX::setgid( $gid ) || die "Couldn't POSIX::setgid to \"$gid\" [$!]\n";
+  return 1;
+}
+
+##############################################################################
+
+sub make_config
+  {
+  # generate the arguments that are passed to Net::Server
+  my $cfg = shift;
+
+  my $c = {};
+  foreach my $k (qw/port user group proto host chroot background/)
+    {
+    $c->{$k} = $cfg->{$k}
+     if exists $cfg->{$k} && $cfg->{$k} ne '0' && $cfg->{$k} ne '';
+    }
+  $c;
+  }
+
+sub check_user_and_group
+  {
+  my ($cfg,$dont_check_chroot) = @_;
+
+  # initial sleep if requested by config file
+  sleep ($cfg->{initial_sleep}) if ($cfg->{initial_sleep} || 0) > 0;
+
+  return if $^O =~ /win32/i;		# not supported on win32
+
+  my $uid = '';
+  my $gid = '';
+
+  # We need to look up user and group name before chroot(), afterwards we no
+  # longer have access to the passwd file.
+  $uid = main::get_uid($cfg->{user}) if ($cfg->{user} || '') ne '';
+  $gid = main::get_gid($cfg->{group}) if ($cfg->{group} || '') ne '';
+    
+  my $are_root = main::is_root_user();
+
+  if ($are_root && ($uid eq '' || $gid eq ''))
+    {
+    my $txt =
+	  "Security warning: Running '$0' as root is not recommended!\n\n"; 
+    Dicop::Event::logger (File::Spec->catfile(($cfg->{log_dir} || 'logs'),
+				($cfg->{error_log} || 'error.log')),$txt);
+    warn ($txt);
+    }
+
+  return if $dont_check_chroot;
+
+  if (($cfg->{chroot} || '') ne '')
+    {
+    if (! $are_root)
+      {
+      die ("Error: Only root can use chroot() - restart '$0' as root.\n");
+      }
+    # try to set group/user _before_ chroot() (we are root, so we set us to
+    # root, since only root can chroot, try to say this five times fast!) to
+    # avoid autoload problem with POSIX; this will simple load the routines.
+
+    main::set_uid('root');
+    main::set_gid('root');
+    }
+  else
+    {
+    my $txt =
+	  "Security warning: Your config file does not set 'chroot'.\n" . 
+          "                  Cannot chroot() - this is not recommended!\n\n";
+    Dicop::Event::logger (File::Spec->catfile(($cfg->{log_dir} || 'logs'),
+				($cfg->{error_log} || 'error.log')),$txt);
+    warn ($txt);
+    }
+  }
+
+1;

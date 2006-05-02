@@ -1,0 +1,269 @@
+
+# include file for dicopd and dicopp
+
+use base qw/Net::Server/;
+
+use Dicop::Mail;
+use Time::HiRes qw/time/;
+
+##############################################################################
+
+package DICOPD;
+
+sub process_request
+  {
+  # main loop, handles one client connect at a time
+  my $self = shift;
+
+  $data->_start_leak_report();
+
+  my $start_time = time();
+  eval
+    {
+    $@ = ''; $data->{last_error} = '';	# clear last error	
+    local $SIG{ALRM} = sub {
+     die(
+      $self->{server}->{peeraddr} . " 504 Request took too long to handle\n");
+     };
+    alarm ( $cfg->{max_request_time} || 5 );
+    my @header; my $lines = 0; 
+    my $post = 0; # GET/POST
+    local $/ = "\n";			# if someone clobbered it, restore $/
+    # read all headers, but stop clients that try to flood us
+    while (<STDIN>)
+      {
+      s/\r?\n$//; $_ = substr($_,0,2048) if length($_) > 2048;
+      $data->{user_agent} = $1 if $_ =~ /User-Agent:\s(.*)/i;
+      last if $_ eq "";
+      if ($_ =~ /^POST\s.*\sHTTP\/1\.[0-1]/)
+        {
+        $post = 1; 
+        }
+      push @header, $_; last if ++$lines > 128;
+      }
+    my $r = $data->default_request();		# default request
+    my $len = 0;
+    my $ignore = 0;                             # request to be ignored?
+    foreach my $t (@header)
+      {
+      # find request or request length (in case of post)
+      if (!$post)
+	{
+	$t =~ /^GET.*\?(.*)\sHTTP\/1\.[0-1]/;
+	$r = $1 if defined $1;
+	# ignore things like:
+	if ($t =~ /^GET.*favicon.ico/)
+	  {
+	  $ignore++;
+	  last;
+	  }
+	}
+      $t =~ s/^Content-length:\s([0-9]+)/$len=$1||0;/ie;
+      }
+    # maximum of 128 Kbyte
+    die ("Illegal request length $len") if $len > 128 * 1024;
+
+    if ($ignore == 0)
+      {
+      if (($post == 1) && ($len > 0))
+	{
+	read (STDIN, $r, $len);         # read body from client
+	}
+      $data->pre_connect($self->{server}->{peeraddr},$r);
+      print "HTTP/1.0 200 Ok\nContent-Type: text/html\n\n";
+      my $res = $data->handle_requests($self->{server}->{peeraddr},$r);
+      $res = $$res if ref($res);                        # make result a scalar
+      $res = oops($data->{last_error}) if !defined $res || $res eq '';
+      print $res;                                       # output to client
+      }
+    };
+  alarm 0;					# reset alarm in case of die()
+
+  # some error occured or request handler died?
+  if (defined $@ && $@ ne '')
+    {
+    my $txt = $@; $txt =~ s/\n/ /g;
+    logger (File::Spec->catfile($cfg->{log_dir},$cfg->{error_log}),$txt);
+    print oops($@);
+    }
+  # we can close the connection now, since no more data (except errors) should
+  # go to the client
+  close STDOUT;
+  my $end_time = time();
+
+  # record the time it took to generate that request (including all overhead,
+  # handle_requests() also tracks the time, but only includes its own time
+  # to be able to include it in the output)
+  $data->_track_connect($end_time - $start_time);
+
+  $data->flush($cfg->{flush});		# from time to time flush data
+  $data->flush_email_queue();		# mail accumulated emails
+
+  $data->_end_leak_report();
+  }
+
+sub oops
+  {
+  # If died while handling a request, print at least some error message to
+  # client. Browser will display this to a (hopefully) human, clients will
+  # just ignore it.
+  my $error = shift || $@ || 'Unknown error';
+
+  "<html><body><h1>Oops</h1>\n"
+  ."<p>Died while handling your request. The error message was:</p>\n<p>\n"
+  ."<b>$error</b>"
+  ."</p>\n<p>Please check the error log for further information.</p>"
+  ."<body></html>";
+  }
+
+sub pre_loop_hook
+  {
+  my $self = shift;
+
+  my $init = "Request handler initialized";
+  print STDERR scalar localtime()," $init\n";
+  logger (File::Spec->catfile($cfg->{log_dir},$cfg->{server_log}),$init);
+  }
+
+#sub pre_server_close_hook 	# seems not to work for kill
+END				# works for kill, and does nothing for kill -9
+  {
+  if (ref($data))
+    {
+    output ("Flushing data to disk");
+    $data->flush() if ref $data;		# flush data
+    output ("Request handler stopped");
+    $data->DESTROY() if ref $data;		# unlock
+    }
+  }
+
+# override because -T and chroot
+sub hup_server {
+  my $self = shift;
+
+  my $lfile = File::Spec->catfile($cfg->{log_dir},$cfg->{error_log});
+
+  logger ($lfile, "Warning: Received HUP signal,");
+  logger ($lfile, "Warning: HUP will not work due to taint mode, shutting down.");
+
+  # disable restart
+  #exec @{ $self->{server}->{commandline} };
+}
+
+sub output
+  {
+  my $text = shift;
+  print STDERR scalar localtime()," $text\n";
+  Dicop::Event::logger (
+   File::Spec->catfile( ($cfg->{log_dir} || 'logs'), 
+			($cfg->{server_log} || 'server.log')),
+   $text);
+  }
+
+# special accept routine that can also work in non-blocking mode
+sub accept {
+  my $self = shift;
+  my $prop = $self->{server};
+  my $sock = undef;
+  my $retries = 30;
+
+  ### try awhile to get a defined client handle
+  ### normally a good handle should occur every time
+  while( $retries-- ){
+
+    ### with more than one port, use select to get the next one
+    if( defined $prop->{multi_port} ){
+
+      ### anything server type specific
+      $sock = $self->accept_multi_port;
+      next unless $sock; # keep trying for the rest of retries
+
+      ### last one if HUPed
+      return 0 if defined $prop->{_HUP};
+
+    ### single port is bound - just accept
+    }else{
+
+      $sock = $prop->{sock}->[0];
+
+    }
+
+    ### make sure we got a good sock
+    if( not defined $sock ){
+      $self->fatal("Received a bad sock!");
+    }
+
+    ### receive a udp packet
+    if( SOCK_DGRAM == $sock->getsockopt(Socket::SOL_SOCKET(),Socket::SO_TYPE()) ){
+      $prop->{client}   = $sock;
+      $prop->{udp_true} = 1;
+      $prop->{udp_peer} = $sock->recv($prop->{udp_data},
+                                      $sock->NS_recv_len,
+                                      $sock->NS_recv_flags,
+                                      );
+
+    ### blocking accept per proto
+    }else{
+      delete $prop->{udp_true};
+      if ($prop->{nonblock})
+	{
+	# get the socket
+	my $s = *$sock;
+	# and it's flags
+	my $flags = fcntl( $s, F_GETFL, 0)
+	  or die "Cannot get flags for the socket $s: $!\n";
+	# set it to non-blocking
+	$flags = fcntl( $s, F_SETFL, $flags | O_NONBLOCK)
+	  or die "Cannot set flags for the socket $s: $!\n";
+	do {
+	  # do a step of work
+	  $prop->{nonblock} = $prop->{worker}->do_work();
+	  
+	  # see if someone wanted to talk to us
+	  $prop->{client} = $sock->accept();
+
+	  # repeat as long as nobody wants to talk to us and we have more work
+	  # XXX TODO 11 is "Resource temp. unavilable, need portable way
+	  } while (((!defined $prop->{client}) || ($! == 11)) && $prop->{nonblock}); 
+
+	# reset socket to blocking
+	$flags = fcntl( $s, F_GETFL, 0)
+	  or die "Cannot get flags for the socket $s: $!\n";
+	# set it to non-blocking
+	$flags = fcntl( $s, F_SETFL, $flags & (~O_NONBLOCK))
+	  or die "Cannot set flags for the socket $s: $!\n";
+	$prop->{client} = $sock->accept() unless $prop->{nonblock};
+	}
+      else
+	{
+        $prop->{client} = $sock->accept();
+        }
+    }
+
+    ### last one if HUPed
+    return 0 if defined $prop->{_HUP};
+
+    ### success
+    return 1 if defined $prop->{client};
+
+    $self->log(2,"Accept failed with $retries tries left: $!");
+
+    ### try again in a second
+    sleep(1);
+
+  }
+  $self->log(1,"Ran out of accept retries!");
+
+  return undef;
+  }
+
+sub unblock
+  {
+  # switch the server from blocking mode into non-blocking mode
+  my $self = shift;
+  my $prop = $self->{server};
+  $prop->{nonblock} = 1;
+  }
+
+1;
+

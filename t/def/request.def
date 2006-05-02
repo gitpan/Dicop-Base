@@ -1,0 +1,99 @@
+#############################################################################
+#
+# request.def - definition file for requests (aka messages between client
+# and server).
+
+# Two sample entries:
+
+{
+  # this patterns is valid for all requests that match this pattern. The order
+  # is not important, so "type_test;cmd_status" would also work. All params
+  # must match exactly - otherwise the request pattern doesn't match.
+  match = "cmd_status;type_test"
+  # these params must be non-empty (and also present). Default is ""
+  nonempty = "start,end,description,jobtype,charset"
+  # These params must be present, but can be empty unless they are listed in
+  # nonempty. Default is "". Any params in 'match' and "nonempty" are 
+  # automatically added to 'required' so you don't need to list them twice.
+  req = "id"
+  # these params are optional (and can be empty if they are not listed in
+  # nonempty). Default is "style". If you don't want "style" to be optional,
+  # set 'opt = ""'.
+  opt = "style"
+  # The type of output sent when this pattern matches. Valid is "html" or
+  # "text". Default is "html".
+  output = "html"
+  # name of the template file to reply if this pattern matches. Optional and
+  # only neccessary if type = "html". If left empty, and type is "html", the
+  # vaue will be "TYPE.txt" where type is the value of the type-param of the
+  # request, e.g. here it would be "test" because "cmd_status;type_test" is
+  # the matching request. This if couse works only if "type" is an allowed,
+  # nonempty param and fixed, e.g. mentioned in match.
+  tpl = "test.txt"
+  # the title string, only necc. if output = "html"
+  title = "Test Status Page"
+  # The type of the request. Types: "status", "info", "auth", "request", 
+  # "other". Default is "status". 
+  type = "status"
+  # The class of the request. This is used to deny/allow requests based on
+  # IPs and nets. Other then that, the class is not used. Possible are "admin",
+  # "stats", "status" and "work". Default is "admin".
+  class = "status"
+  # setting this to 1 means this request can only be done with proper
+  # authentication (e.g. username and password). Default is 1.
+  auth = 1
+  # if the error message is set, the pattern will throw an error upon matching
+  # a request
+  # throw = "Request foo not allowed"
+}
+
+{
+  match = "cmd_status;type_main"
+  title = "Main Status"
+  auth = 0
+}
+
+# using a regular expression for matching (starts with "/")
+{
+  match = "type_/^(news|changes)$;cmd_help"
+  title = "Help"
+  auth = 0
+}
+
+# this matches "cmd_foo;type_bar;id_anyid"
+{
+  match = "cmd_foo;type_bar"
+  req = "id"
+  title = "FooBar with ID"
+  auth = 0
+}
+
+# this matches "cmd_foo;type_bar" (but not one with ID!)
+{
+  match = "cmd_foo;type_bar"
+  title = "FooBar without ID"
+  auth = 0
+}
+
+# this matches "cmd_foo;type_baz" with an error
+{
+  match = "cmd_foo;type_baz"
+  throw = "Request baz not allowed"
+  title = "FooBar"
+  auth = 0
+}
+
+# All requests that don't match any of the patterns above are automatically
+# invalid and rejected.
+
+# AUTHOR
+#
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+#
+# DiCoP is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License version 2 as published by the Free
+# Software Foundation.
+#
+# See L<http://www.bsi.de/> for more information.
+#
+

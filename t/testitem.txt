@@ -1,0 +1,5 @@
+Dicop::Item {
+  name => 'test',
+  foo => 9,
+  blah => 7,
+}

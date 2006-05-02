@@ -1,0 +1,81 @@
+
+=pod
+
+=head1 README
+
+You can use perldoc to read this document: C<perldoc README>.
+
+=head1 INSTALLATION
+
+Prior to using this package, you must install it. 
+
+For detailed instructions refer please to the L<INSTALL> file (f.i.
+via perldoc INSTALL).
+
+=head2 Verify the package
+
+Before you do anything with the downloaded package, verify the signature.
+
+Download our GnuPG key from http://www.bsi.bund.de/produkte/dicop/download.htm,
+as well as the detached signature (named C<.sig>) and then do:
+
+        gpg --verify Dicop-Base-3.02.tar.gz.sig
+
+(Replace 3.02 by the actual version you got). If the signature does B<not>
+verify ok, please notify us immidiately. B<DO NOT> run perl Makefile.PL or
+anything else nor install the package when the signature cannot be verified
+ok. B<Your system might get compromised!>.
+
+You can also install Module::Signature, and then do a cpansign --verify
+inside the package to verify the SIGNATURE file.
+
+=head2 Requirements
+
+You will need Perl v5.8.1 or better, preferable Perl v5.8.7 (for Windows use
+ActiveState Perl from http://www.activestate.com/).
+
+=head2 Supported platforms
+
+This module should pass its testsuite under Linux, Solaris and Windows.
+
+However, we can not guaranty that it will work. If you experience any
+problems, please contact us (see below), or file a bug report
+at L<http://rt.cpan.org/>.
+
+=head1 AUTHOR
+
+(C) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006.
+
+For licensing information please refer to the LICENSE file.
+
+Some small portions of Dicop-Base (in C<< lib/basic>> and C<< lib/daemon)
+are from:
+
+	Paul Seamons <paul@seamons.com>
+	http://seamons.com/
+	
+	Rob Brown <bbb@cpan.org>
+
+  	This package may be distributed under the terms of either the
+  	GNU General Public License or the Perl Artistic License
+
+	All rights reserved.
+
+We include them here under the GNU General Public License.
+
+We are very gratefull for the existance and availability of the C<Net::Server>
+package as well as the countless other modules used in this software - they
+make our life much more easier :)
+
+=head2 Contact
+
+Address: BSI
+	 Referat 123
+	 Godesberger Alle 185-189
+	 Bonn
+	 53175
+	 Germany
+email:	 dicop @ bsi.bund.de		(for public key see dicop.asc)
+www:	 http://www.bsi.bund.de/
+
+=cut

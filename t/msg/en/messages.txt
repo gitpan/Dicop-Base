@@ -1,0 +1,141 @@
+# This file contains the error messages and response texts from the server.
+# This will be output to the client for each of his requests.
+# the format is as follows: 
+# errorcodenumber error message
+# The error message can have embedded parameters, which are named ##param1##,
+# ##param2## aso. These are message specific and simple inserted at the place
+# specified. Some of them are informal, others follow a specific format. See
+# perldoc dicop for further information
+
+###############################################################################
+# Clients can safely ignore this message(s)
+
+090 Cannot find worker ##param1##
+091 Cannot find target ##param1##
+098 Internal error: ##param1##
+099 ##param1##
+
+###############################################################################
+# System messages
+
+# Throw away all chunks from this/these job(s) (it is closed)
+100 Discard ##param1##
+# hash and "filename" of file(s) that need to be updated/downloaded by client
+101 ##param1## "##param2##"
+# hash and "filename" of temporary file(s) that need to be updated/downloaded by
+# client for this chunk only
+102 ##param1## "##param2##"
+
+###############################################################################
+# Ok messages
+
+200 ##param1##
+201 Done report accepted. Thanx!
+202 Solved report for chunk ##param2##, job ##param1## accepted. Congratulations!
+203 Failed report for chunk ##param2##, job ##param1## accepted. Hope you have more luck next time.
+204 Test passed. Good!
+
+###############################################################################
+# Soft-error messages, client should retry the action later on
+
+300 Server busy, retry later
+301 Wait, currently no work for you
+302 Wait, your request rate-limit was reached
+
+###############################################################################
+# Hard errors, client does not need to bother to retry this request
+
+400 Unknown or invalid client '##param1##'
+401 Unknown or invalid job '##param1##'
+402 Unknown or invalid chunk '##param1##' in job '##param2##'
+403 Invalid token '##param1##', does not match stored chunk token
+404 Chunk does not belong to you '##param1##'
+405 Chunk not issued, cannot accept your report
+406 Chunk border '##param1##' in timeout invalid for charset of job ##param2##
+407 Required parameter '##param1##' missing in request
+408 Chunk status '##param1##' invalid
+409 Some tests failed.
+410 Unknown or invalid testcase '##param1##'
+411 File name '##param1##' has illegal format
+412 File '##param1##' does not exist or is not readable
+413 Failed to authenticate request, IP ##param1## not allowed to connect
+414 Done report not accepted - status or CRC differs from peer opinion
+415 Solved report not accepted - status or CRC differs from peer opinion
+416 Done reports should not carry a result.
+
+###############################################################################
+# Errors on adding/changing/deleting (only seen be puny humans via browser) 
+
+430 Object ##param1## with id ##param2## does not exist
+431 A charset '##param1##' already exists with id ##param2##
+432 Cannot delete ##param1## ###param2##, it is used by ##param3## ##param4##. Delete ##param3## ##param4## first
+433 Cannot delete user ###param1##, need at least one user
+434 Cannot change read-only key '##param1##' of ##param2## ##param3##
+435 Cannot change key '##param1##' of ##param2## ##param3## to '##param4##'
+436 Could not add item: ##param1##
+437 Could not change item: ##param1##
+
+# Errors regarding request format, client should not retry the requests at all
+# (at least not in that malformed format...)
+# The client should wait a bit and terminate upon seeing one of these errors,
+# and then try to update itself - because somethig was seriously wrong.
+
+450 Malformed request: '##param1##'
+451 Invalid command '##param1##'
+452 Client outdated, please upgrade to at least v##param1##
+453 No requests to handle
+454 Too many requests
+455 Request for status or form must not accompanied by other requests
+456 Request 'info' can only come from a proxy
+457 Your IP '##param1##' does not match the stored IP from client '##param2##'
+458 Non-existing ##param1## '##param3##' for command '##param2##'
+459 Parameter '##param1##' of command '##param2##', type '##param3##' is empty
+460 Parameter '##param1##' ('##param2##') not allowed in request
+461 Illegal sort type ##param1##
+462 Invalid request - no request pattern matched
+463 You will be terminated
+464 Request must be accompanied by authentication
+465 Couldn't authenticate you, no such ##param1## '##param2##'
+466 No more than one authentication information request allowed
+467 Your architecture '##param1##' is not listed as allowed
+468 Parameter ##param1## has illegal format ('##param2##')
+469 Couldn't authenticate you, wrong user or password
+
+###############################################################################
+# Internal error messages:
+
+# The client should retry sending in all his requests later on (after waiting
+# a sufficient time), since the server had a hickup
+
+500 Internal error
+501 Unknown error number
+502 No error message for error ###param1##
+503 Got no response back from server
+504 Request took too long to handle
+505 Internal error: Cannot write file ##param1##: ##param2##
+
+###############################################################################
+# Client's messages
+
+600 Client started at ##time##
+601 Illegal client id 0. Please specify with --id=id_number
+602 Could not construct client object
+603 Client stopped at ##time##
+604 Could not run worker ##param1##
+605 Could not update file '##param1##'
+
+###############################################################################
+# internal log/debug/error messages
+700 Error ###param1## in adding verifier to list
+
+###############################################################################
+# internal server info messages
+750 Got a result '##param1##' for chunk ##param2##, job ##param3##.
+751 Closed job '##param1##' after work request from client ##param2## because no more open chunks in job
+
+###############################################################################
+# hard errors on daemon/server startup
+800 No users found, please run adduser.pl before starting daemon
+801 Key '##param1##' invalid in '##param2##' at line ##param3##
+802 Value '##param2##' for key '##param1##' invalid in '##param3##' at line ##param4##
+803 Key '##param1##' must not be empty/undefined in '##param2##'

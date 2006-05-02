@@ -1,0 +1,22 @@
+
+=pod
+
+=head1 BUGS - Only a dead Bug is a good Bug
+
+=head2 External modules
+
+=over 2
+
+=item Net::Server
+
+When using v0.85 of Net::Server, starting dicopd may emit a warning from
+Net::Server along the lines of:
+
+	Couldn't POSIX::setuid to \"$uid\" []
+
+This seems to be spurious and can be ignored.
+
+=back
+
+=cut
+

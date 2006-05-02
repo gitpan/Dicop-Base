@@ -1,0 +1,19 @@
+---
+name: Dicop-Base
+version: 3.02
+version_from: ''
+license: gpl
+distribution_type: module
+generated_by: Dicop-Base version 3.02
+installdirs: site
+requires:
+  Digest::MD5: 2.09
+  File::Spec: 0.82
+  HTML::Tagset: 3.03
+  HTTP::Request: 1.24
+  Mail::Sendmail: 0.77
+  Math::BigInt: 1.77
+  Math::String: 1.27
+  Net::Server: 0.86
+  Test::More: 0.47
+  Time::HiRes: 1.2

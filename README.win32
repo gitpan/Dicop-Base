@@ -1,0 +1,33 @@
+
+=pod
+
+=head1 README FOR WIN32 (AKA MS WINDOWS)
+
+You can use perldoc to read this document: C<perldoc README>.
+
+=head1 GENERAL NOTES
+
+Dicop::Base might run completely under Windows, but we have not
+tested this.
+
+The parts of this package that are used by Dicop-Client do run
+under Windows, though.
+
+=head1 AUTHOR
+
+(C) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006.
+
+For licensing information please refer to the LICENSE file.
+
+=head2 Contact
+
+Address: BSI
+	 Referat 123
+	 Godesberger Alle 185-189
+	 Bonn
+	 53175
+	 Germany
+email:	 dicop @ bsi.bund.de		(for public key see dicop.asc)
+www:	 http://www.bsi.bund.de/
+
+=cut

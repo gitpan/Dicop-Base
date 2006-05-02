@@ -1,0 +1,91 @@
+
+=pod
+
+=head1 Todo (laundry list)
+
+You can read this file better by doing C<perldoc TODO>.
+
+=head2
+
+=over 2
+
+=item *
+
+_gen_table() has some Dicop::Server specific bits in it (type => types).
+
+=item *
+
+warn if lines in Item files ends in '";'
+
+=item *
+
+add a test for no_file_check in request_file()
+
+=item *
+
+Support different hash algorithms like SHA1 via C<SHA1=1234567890abcdef>
+notation. That requires fixes to all hash computations and comparisations.
+
+=item *
+
+Refacter the loading code so that it is more generalized, e.g. each object
+type has its own load() routine which could call load() on sub-objects that
+are contained in it.
+
+=item *
+
+Implement paged-view of object lists (needs items-per-page and page options)
+
+=item *
+
+Use Compress::Zlib to write compressed files out and read them back in =>
+smaller disk footprint.
+
+=back
+
+
+=head2 Config
+
+=over 2
+
+=item *
+
+write/flush? (necc. for edit via webform)
+
+=item *
+
+Editable via webform
+
+=back
+
+
+=head2 Internal
+
+=over 2
+
+=item *
+
+Look at Data::Dumper, Freeze/Thaw etc to simplify code?
+
+=item *
+
+Testsuite coverage needs to be increased
+
+=item *
+
+Doc coverage needs to be increased
+
+=back
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de> for more information.
+
+=cut
+

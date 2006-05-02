@@ -1,0 +1,102 @@
+
+=pod
+
+=head1 INSTALL
+
+If you haven't read the README yet, you are advised to do so now before
+continuing reading this document.
+
+You can read this document also via 'perldoc INSTALL', this gets rid of the
+funny =something lines ;)
+
+More help is available via C<perldoc Dicop::Base>.
+
+=head2 Requirements
+
+You will need at least Perl v5.8.1 to install this package. However, we
+recommend getting the latest stable Perl version (v5.8.5 at the time of
+writing).
+
+=head2 Quick guide for the impatient
+
+B<Before> untaring/unzipping it, you need first to verify the package.
+
+Download our GnuPG key from http://www.bsi.bund.de/produkte/dicop/download.htm,
+as well as the detached signature (named C<.sig>) and then do:
+
+	gpg --verify Dicop-Base-3.00_40.tar.gz.sig
+
+(Replace 3.00_40 by the actual version you got). If the signature does B<not>
+verify ok, please notify us immidiately. B<DO NOT> run perl Makefile.PL or
+anything else nor install the package when the signature cannot be verified
+ok. B<Your system might get compromised!>.
+
+If the signature was okay, build a Makefile, then run "make" to create all the
+neccessary files and then run the testsuite to make sure it really works on
+your system:
+
+	perl Makefile.PL
+
+If this step fails, you need either to upgrade your Perl installation or
+upgrade/install some additional modules. Please see below under
+L<Where to find missing modules>.
+
+If the former step was completed successfully, you can make the package and
+run the testsuite:
+
+	make
+	make test
+
+If all tests, pass, run as root:
+
+	make install
+
+This installs the C<Dicop::Base> package on your system, and you are now ready
+to install other packages that depend on it, like C<Dicop::Server>.
+
+=head2 Where to find missing modules
+
+If some modules are missing in your Perl installation, then you need to get
+them and install them. You can get them from CPAN L<http://search.cpan.org>/
+or L<http://www.cpan.org/>.
+
+Install the modules via the same commands for each of them:
+
+	perl Makefile.PL
+	make test
+	make install
+
+Some modules depend on others, you must resolve these dependencies by
+installing in the right order.
+
+You can check wether a particulary module is installed and which version it
+has by doing (example for Digest::MD5):
+
+	perl -MDigest::MD5 -e'print "$Digest::MD5::VERSION\n";'
+
+on the commandline. Or shorter:
+	
+	perl -MDigest::MD5\ 99
+
+It either prints the currently installed version or failes with something
+like 'module not found'.
+
+=head1 DOCUMENTATION
+
+Please have a look into C</doc>, you will find there help files in pod format.
+
+If you have any more questions, please send us an email. We accept encrypted
+mail, please use the key attached as C<dicop.asc>.
+
+=head1 AUTHOR
+
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2004
+
+DiCoP is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License version 2 as published by the Free
+Software Foundation.
+
+See the file LICENSE or L<http://www.bsi.bund.de/> for more information.
+
+=cut
+

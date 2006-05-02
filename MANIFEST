@@ -1,0 +1,69 @@
+BUGS
+CHANGES
+CHANGES-3.00
+INSTALL
+LICENSE
+MANIFEST
+README
+README.win32
+TODO
+SIGNATURE
+Makefile.PL
+dicop.asc			GnuPG public key
+t/logs/dummy.txt			to create logs/
+build/wcr			recursive wc
+build/README
+t/tpl/setappform.tpl
+t/tpl/edit_indend.inc
+t/tpl/editfield_select.inc
+t/tpl/editfield_string.inc
+t/tpl/editfield_check.inc
+t/common.pl
+t/cachepm.t
+t/configpm.t			Dicop::Config
+t/connect.t			Dicop::Connect
+t/basepm.t
+t/daemon.t			test lib/daemon
+t/basics.t			test lib/basics
+t/eventpm.t			test Event.pm
+t/hashpm.t
+t/itempm.t
+t/mailpm.t
+t/random.t			test Dicop::random()
+t/rand_req.t
+t/handlerpm.t			test Dicop::Handler.pm
+t/requestpm.t			test Dicop::Request
+t/patternpm.t			test Dicop::Request::Pattern
+t/security.t
+t/taint.t
+t/template.t
+t/test.cfg
+t/testfile.txt
+t/testitem.txt
+t/test-dir/foo
+t/test-dir/bar
+t/test-config/server.cfg
+t/client.cfg
+lib/daemon
+lib/basics
+lib/Dicop/Base.pm
+lib/Dicop/Cache.pm
+lib/Dicop/Client/LWP.pm
+lib/Dicop/Client/wget.pm
+lib/Dicop/Config.pm
+lib/Dicop/Connect.pm
+lib/Dicop/Handler.pm
+lib/Dicop/Mail.pm
+lib/Dicop/Event.pm
+lib/Dicop/Hash.pm
+lib/Dicop/Item.pm
+lib/Dicop/Item/Template.pm
+lib/Dicop/Security.pm
+lib/Dicop/Request.pm
+lib/Dicop/Request/Pattern.pm
+t/msg/messages.txt		default messages
+t/msg/en/messages.txt		ditto
+t/msg/de/messages.txt		translated
+t/def/request.def		Request pattern definitions
+t/def/objects.def		Dicop::Data:: object defintions
+META.yml			Module meta-data (added by MakeMaker)
