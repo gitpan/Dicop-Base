@@ -954,7 +954,6 @@ sub handle_requests
     $res = $self->html_header() . $res . $self->html_footer();
     $res =~ s/##base-version##/$Dicop::Base::VERSION/g;
     $res =~ s/##base-build##/$Dicop::Base::BUILD/g;
-    $res =~ s/##uptime##/$self->uptime();/eg;
 
     $res =~ s/##os##/$self->{config}->{os} || $^O/eg;
     $res =~ s/##name##/$self->{config}->{name} || 'unknown'/eg;
@@ -2388,6 +2387,11 @@ Finds a user by his name, and then check that the hash from the given
 password matches the stored hash value. Return 0 for okay, -1 for no such
 user and -2 for wrong pwd.
 
+=head2 build(), version()
+
+These methods return the version and build number of the 
+current event handler.
+
 =head2 request_auth()
 
 A client (or proxy) connected, so check the authentication request and all the
@@ -2406,6 +2410,11 @@ defined and a proxy (check C<$client->type()>), C<$req_map> contains a hash
 ref where the keys are the request IDs, and the values are (currently) refs
 to a client object or undef. So you can check each single request and whether
 it authenticated ok, or not.
+
+=head2 request_file()
+
+The client requested a file, so send to him where to find that
+file and what the file hash is.
 
 =head2 name_from_type()
 
@@ -2441,6 +2450,13 @@ Applies self-check and crumbles if errors in data structure are present.
 Cchecks the client IP/MASK against the peeraddress. Returns undef for ok,
 otherwise an error message.
 
+=head2 default_request()
+
+Return a request that can be used if the connect does not
+contain any requests at all. This happens typically if
+the user accessed the GUI with a browser by typing in
+just the IP and port number.
+
 =head2 parse_requests()
 
 This parses the form parameters as send by the client (via GET/PUT) and breaks
@@ -2448,6 +2464,11 @@ them into requests. It then sorts the requests into groups and returns
 references to these groups (as arrays):
 
 	($auth,$info,$reports,$requests,$forms) = $self->parse_requests();
+
+=head2 other_request()
+
+Returns a class and type for requests with unknown patterns. Used
+by C<parse_requests()>.
 
 =head2 handle_requests()
 
@@ -2528,6 +2549,18 @@ This also honours styles and includes files vi C<##include_filename.inc##>.
 
 Find C<##include_filename.inc##> inside a template and include the file there.
 
+=head2 find_template()
+
+	my $tpl = $handler->find_template();
+
+Try to find a template file, first looking at the currently set style
+directory, then in the generic template directory.
+
+=head2 email()
+
+Prepare email based on a template and further info, then place it
+in the send queue.
+
 =head2 check_auth_request()
 
 Check the auth or info request a client/proxy sent us for basic validity.
@@ -2553,6 +2586,10 @@ also L<status_file()>.
 Creates an HTML table with files and directories, that can be used to traverse
 directory trees by the user. The files are selectable. See
 also L<status_dir()>.
+
+=head2 status_config()
+
+Create a HTML table containing the current configuration.
 
 =head2 get_id_list
 
@@ -2599,6 +2636,24 @@ the testsuite).
 
 Construct C<< $self->{filenames} >> for flush() from the given object list.
 Does also set C<< $self->{dir} >>.
+
+=head2 finish_html_request()
+
+	$handler->finish_html_request(\$request);
+
+Called for each request after handling it.
+
+=head2 finish_connect()
+
+	$handler->finish_connect();
+
+Hook, called once after each client connect.
+
+=head2 pre_connect()
+
+	$handler->pre_connect($peer, $params);
+
+Hook, called once before each client connect is handled.
 
 =head1 BUGS
 

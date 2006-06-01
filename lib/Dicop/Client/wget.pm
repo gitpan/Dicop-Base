@@ -12,11 +12,9 @@
 
 package Dicop::Client::wget;
 use vars qw($VERSION);
-$VERSION = '1.04';	# Current version of this package
-require  5.004;		# requires this Perl version or later
+$VERSION = '1.05';	# Current version of this package
+require  5.008001;	# requires this Perl version or later
 
-require Exporter;
-@ISA = qw/Exporter/;
 use strict;
 use Dicop::Event qw/crumble msg logger load_messages/;
 use Dicop::Base qw/read_file/;
@@ -162,48 +160,58 @@ Dicop::Client::wget -- a connector object for Dicop::Client using wget
 
 =head1 REQUIRES
 
-perl5.004, Exporter
-
-=head1 EXPORTS
-
-Exports nothing per default.
+perl5.008001, wget
 
 =head1 DESCRIPTION
 
 This module represents a connector object for the client and manages the
-actual connection between server and client. It uses the popular wget program
-to do the work.
+actual connection between server and client. It uses the popular C<wget>
+program to do the work.
 
 =head1 METHODS
 
-=head2 new
+=head2 new()
 
 Create a new object.
 
-=head2 agent
+=head2 agent()
 
 Set/get the user agent string.
 
 	my $agent = $ua->agent();
 	$ua->agent('UserAgent/1.0');
   
-=head2 post
+=head2 post()
 
 Given a server url and a parameter string, simulates a PUT request:
 
 	$response = $ua->put('http://127.0.0.1:8888/',$params);
 
-=head2 get
+=head2 get()
 
 Given a server url and a parameter string, simulates a GET request:
 	
 	$response = $ua->get('http://127.0.0.1:8888/files/main');
 
-=head2 message
+=head2 message()
 
 	$msg = $ua->message();
 
 If the connect failed, this method returns a human-readable error message.
+
+=head2 code()
+
+Return the HTTP respone code from the server for the last post() or get().
+
+=head2 is_success()
+
+Return true if the last request from the server did not result in an error.
+
+=head2 content()
+
+	my $content = $ua->content();
+
+Return the content of the last successfull post() or get() call.
 
 =head1 BUGS
 

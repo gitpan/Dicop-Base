@@ -13,7 +13,7 @@
 package Dicop::Request;
 use vars qw($VERSION $DEFAULT_PATTERNS $VALID);
 $VERSION = 1.09;	# Current version of this package
-require  5.008;		# requires this Perl version or later
+require  5.008001;	# requires this Perl version or later
 
 use Dicop::Item;
 @ISA = qw/Dicop::Item/;
@@ -596,6 +596,13 @@ Return true if the field's value can be changed.
 
 Returns true if the request is of the tested type (form, auth, info or request).
 Returns false if the request is invalid (e.g. an error occured).
+
+=head2 sort_order()
+
+	my ($sort_dir, $sort_by) = $request->sort_order();
+
+Return sort direction and the field to sort on, for example
+C<< 'up','id') >>.
 
 =head1 BUGS
 

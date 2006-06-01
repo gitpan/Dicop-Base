@@ -482,7 +482,7 @@ history.
 
 =head2 2004-09-12 (Base v3.00 build 49)
 
-=ovr 2
+=over 2
 
 =item fixed
 
@@ -701,6 +701,8 @@ history.
 
 =head2 2004-08-19 (Base v3.00 build 38)
 
+=over 2
+
 =item added
 
 	Item.pm: _construct() does construct foo_id object ref from ID
@@ -720,6 +722,8 @@ history.
 
 =head2 2004-08-18 (Base v3.00 build 37)
 
+=over 2
+
 =item fixed
 
 	gen_table: use $item->fields(), not $item->keys()
@@ -731,6 +735,8 @@ history.
 =back
 
 =head2 2004-08-17 (Base v3.00 build 36)
+
+=over 2
 
 =item added
 

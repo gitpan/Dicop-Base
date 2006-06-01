@@ -48,8 +48,8 @@ at L<http://rt.cpan.org/>.
 
 For licensing information please refer to the LICENSE file.
 
-Some small portions of Dicop-Base (in C<< lib/basic>> and C<< lib/daemon)
-are from:
+Some small portions of Dicop-Base (in C<< lib/basic >> and
+C<< lib/daemon >>) are from:
 
 	Paul Seamons <paul@seamons.com>
 	http://seamons.com/

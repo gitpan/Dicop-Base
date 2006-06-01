@@ -11,8 +11,8 @@
 #############################################################################
 
 package Dicop::Event;
-$VERSION = 1.03;	# Current version of this package
-require  5.004;		# requires this Perl version or later
+$VERSION = 1.04;	# Current version of this package
+require  5.008001;	# requires this Perl version or later
 
 use Exporter;
 @ISA = qw/Exporter/;
@@ -154,7 +154,7 @@ __END__
 
 =head1 NAME
 
-Dicop::Error -- handle error messages
+Dicop::Event - handle error messages in a Dicop system
 
 =head1 SYNOPSIS
 
@@ -165,7 +165,7 @@ Dicop::Error -- handle error messages
 
 	Dicop::Error::handler ( \&my_handler );
 
-	crumble ('You <B>moron!</B> ;o)');	# display for browser
+	crumble ('You <B>fail!</B> ;o)');	# display for browser
 
 	logger ('logs/server.log','Error','405','No data found.');
 
@@ -181,7 +181,7 @@ Dicop::Error -- handle error messages
 
 =head1 REQUIRES
 
-perl5.005, Exporter
+perl5.008001, Exporter
 
 =head1 EXPORTS
 

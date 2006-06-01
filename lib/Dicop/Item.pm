@@ -749,65 +749,86 @@ The following fields are present:
 
 =head1 METHODS
 
-=over 2
-
-=item _default
+=head2 _default()
 
 Given a hash, initializes self with the values from the hash in case they are
 not already defined:
 
 	$self->SUPER::_default( { name => 'unknown', blah => 9 } );
 
-=item dirty
+=head2 new_id()
+
+Create a new, globally unique ID number for this item.
+
+=head2 set_id()
+
+Set the  new globally ID number that will be used next by C< new_id() >.
+
+=head2 new()
+
+	my $item = Dicop::Item->new();
+
+Create a new empty item with default values for the fields.
+
+If object templates were loaded, and a template exists for the
+requested class (f.i. "Dicop::Item"), then the template
+will be used to fill in the fields.
+
+=head2 dirty()
 
 Return the dirty flag. If given argument, sets the flag to that:
 
 	print $item->dirty();		# 0 as default
 	print $item->dirty(1);		# print 1
 
-=item as_string
+=head2 as_string()
 
 Return the object as compact string to be saved to file or printed etc. 
 
-=item from_file
+=head2 check()
+
+Applies self-check and crumbles if there are errors in internal data
+structure.
+
+=head2 from_file()
 
 	$objects = [ Dicop::Item::from_file( $filename ) ];
 
 Reconstruct objects from the string form loaded from a file, and return a list
 of these objects.
 
-=item from_string
+=head2 from_string()
 
 	$objects = [ Dicop::Item::from_string( $string ) ];
 
 From a string created with as_string, recreate the object(s). Returns a list
 of objects or a single one, depending on context (scalar/list).
 
-=item keys
+=head2 keys()
 
 	my @keys = $item->keys();
 
 Returns a list of additional keys that must be included when generating
 HTML representations/lists. The list of keys is defined by the template.
 
-=item get_as_string
+=head2 get_as_string()
 
 Convert data item from internal representation to a string suited for HTML
 presentation.
 
-=item get_as_hex
+=head2 get_as_hex()
 
 Just the same as get_as_string. You can override this method to convert certain
 (or all) keys to hexify before returning them. Good for strings that could
 contain unsafe or control characters.
 
-=item get
+=head2 get()
 
 Return the value of a specified field of the object:
 
         $object->get('foo');
 
-=item put
+=head2 put()
 
 Put the new value C<$value> into the field called C<$key>:
 
@@ -817,48 +838,68 @@ Note: For performance reasons, C<put()> does not call C<modified()>, so the obje
 flagged as modified afterwards. You need to call C<modified()> manually if you wish to
 mak the object as modified.
 
-=item change
+=head2 change()
 
 Change a field's value after checking that the field can be changed (via
 L<can_change>) and checking the new value. If the new value does not conform
 to the expected format, it will be silently modifed (f.i. invalid characters
 might be removed) and then the change will happen:
 
-	$object->change('foo','bar');   # will change $object->{foo} to bar
+	$item->change('foo','bar');	# will change $object->{foo} to bar
 					# if foo can be changed
 
-=item can_change
+=head2 can_change()
 
 Return true if the field's value can be changed.
 
 	die ("Can not change field $field\n") if !$object->can_change($field);
 
-=item flush
+=head2 flush()
 
 	$item->flush();
 
 Override in a subclass to flush item to disk.
 
-=item error
+=head2 error()
 
 	$item->error();
 
 Return a potential error status of the object, or the empty string if no error
 occured.
 
-=item copy
+=head2 copy()
 
 	$evil_twin = $item->copy();
 
 Makes a deep copy of the object including copies of sub-objects.
 
-=item parent
+=head2 parent()
 
-	my $parent = $self->parent();
+	my $parent = $item->parent();
 
 Returns the parent object, e.g. the container we belong to.
 
-=back
+=head2 fields()
+
+	my @fields = $item->fields();
+
+Return a list of additional keys that must be included when generating
+HTML representations or lists.
+
+=head2 modified()
+
+	$item->modified(1) unless $item->modified();
+
+Returns true if the item was modified, and thus needs flushing.
+
+If given a true or false argument, will set the modified
+flag to the corrosponding state.
+
+=head2 template()
+
+	my $tpl = $item->template();
+
+Return the template for this class or undef if none exists.
 
 =head1 BUGS
 

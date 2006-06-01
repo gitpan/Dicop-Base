@@ -34,6 +34,8 @@ t/rand_req.t
 t/handlerpm.t			test Dicop::Handler.pm
 t/requestpm.t			test Dicop::Request
 t/patternpm.t			test Dicop::Request::Pattern
+t/pod.t
+t/pod_cov.t
 t/security.t
 t/taint.t
 t/template.t

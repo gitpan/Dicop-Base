@@ -14,7 +14,7 @@ package Dicop::Base;
 use vars qw($VERSION $BUILD @ISA @EXPORT_OK);
 use strict;
 
-$VERSION = '3.02';	# Current version of this package
+$VERSION = '3.03';	# Current version of this package
 $BUILD = 0;		# Current build of this package
 require 5.008001;	# requires this Perl version or later
 
@@ -546,6 +546,12 @@ the routine attempts to create them before writing the file.
 =head2 read_list
 
 Read a text file with lists (given as complete path/name) and return areference to the data read.
+
+=head2 read_dir()
+
+	my @files = Dicop::Base::read_dir($directory);
+
+Return a list of all files and directories in the given directory.
 
 =head2 read_table_template
   

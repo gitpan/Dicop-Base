@@ -8,6 +8,20 @@ This document details the complete changes from v3.01 onwards.
 See the CHANGES-3.01 file and the CHANGES files in the DiCoP-Server package
 for the full version history.
 
+=head2 2006-06-01 (Base v3.03)
+
+=over 2
+
+=item fixed
+
+	rmoved unused uptime() hook for output
+	fix all POD errors and add POD tests
+	bring POD coverage to 100% and test for it
+	wcr lib: Total: lines 8851, words 31397, chars 225268
+	1538 tests
+
+=back
+
 =head2 2006-05-03 (Base v3.02)
 
 No functional changes:

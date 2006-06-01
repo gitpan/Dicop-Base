@@ -12,8 +12,8 @@
 
 package Dicop::Cache;
 use vars qw($VERSION);
-$VERSION = 1.02;	# Current version of this package
-require  5.005;		# requires this Perl version or later
+$VERSION = 1.03;	# Current version of this package
+require  5.008001;	# requires this Perl version or later
 
 use strict;
 use Dicop::Base;		# for time()
@@ -181,8 +181,8 @@ sub purge
       {
       if ($self->{time}->{$key} > $bordertime)
 	{
-	$self->{oldesttime} = $self->{time}->{$key};	# oldest to surviving
-	$self->{oldestthing} = $key;			# oldest to surviving
+	$self->{oldesttime} = $self->{time}->{$key};	# oldest to survive
+	$self->{oldestthing} = $key;			# oldest to survive
 	last; 						# anything left is kept
 	}
       delete $self->{cache}->{$key};
@@ -245,7 +245,7 @@ sub timeout
   if (defined $_[0] && $self->{timeout} != $_[0])
     {
     $self->{timeout} = shift;
-    $self->purge();				# readjust
+    $self->purge();				# re-adjust
     }
   $self->{timeout};
   }
