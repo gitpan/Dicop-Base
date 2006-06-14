@@ -8,6 +8,20 @@ This document details the complete changes from v3.01 onwards.
 See the CHANGES-3.01 file and the CHANGES files in the DiCoP-Server package
 for the full version history.
 
+=head2 2006-06-14 (Base v3.04)
+
+=over 2
+
+=item fixed
+
+	Dicop::Item::new() disallows now invalid IDs like: 0, '', undef, -1
+	add POD tests to MANIFEST
+	fix Makefile.PL (and META.yml) for AUTHOR and ABSTRACT
+	wcr lib: Total: lines 8856, words 31441, chars 225505
+	1542 tests
+
+=back
+
 =head2 2006-06-01 (Base v3.03)
 
 =over 2

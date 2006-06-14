@@ -17,21 +17,24 @@ sub MY::metafile {
   require YAML::Node;
   my $node = YAML::Node->new({});
 
-  $node->{name}                 = $self->{DISTNAME};
-  $node->{version}              = $self->{VERSION};
-  $node->{version_from}         = $self->{VERSION_FROM};
-  $node->{license}              = 'gpl';
-  $node->{distribution_type}    = 'module';
-  $node->{generated_by}         = "$self->{DISTNAME} version $self->{VERSION}";
-  $node->{installdirs}          = 'site';
-  $node->{requires}             = $self->{PREREQ_PM};
+  for my $k (qw/
+     AUTHOR ABSTRACT VERSION/)
+    { 
+    $node->{ lc($k) } = $self->{$k};
+    }
+  $node->{name}			= $self->{DISTNAME};
+  $node->{license}		= 'gpl';
+  $node->{distribution_type}	= 'module';
+  $node->{generated_by}		= "$self->{DISTNAME} version $self->{VERSION}";
+  $node->{installdirs}		= 'site';
+  $node->{requires}		= $self->{PREREQ_PM};
 
   my $dump = YAML::Dump( $node );
 
   $dump =~ s/^(.*)$/\t\$(NOECHO) \$(ECHO) "$1" >>META.yml/gm;
   $dump =~ s/>>META\.yml/>META.yml/;
 
-  return "metafile:\n$dump";
+  "metafile:\n$dump";
 }
 
 use Dicop::Base;	# for VERSION and BUILD
@@ -43,8 +46,10 @@ $version .= "_$Dicop::Base::BUILD" if $Dicop::Base::BUILD > 0;
 # thus also HTML::Parser, which in turn needs HTML::Tagset
 
 WriteMakefile(
-    'NAME'		=> 'Dicop-Base',
-    'VERSION'           => $version,
+    'NAME'		=> 'Dicop::Base',
+    'VERSION'		=> $version,
+    'ABSTRACT'		=> 'basics for a Dicop HTTP server/client',
+    'AUTHOR'		=> 'BSI',
     'PREREQ_PM'		=> { 
 		'Digest::MD5' => 2.09,
 		'Mail::Sendmail' => 0.77,

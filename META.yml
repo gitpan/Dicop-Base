@@ -1,10 +1,11 @@
 ---
+author: BSI
+abstract: basics for a Dicop HTTP server/client
+version: 3.04
 name: Dicop-Base
-version: 3.03
-version_from: ''
 license: gpl
 distribution_type: module
-generated_by: Dicop-Base version 3.03
+generated_by: Dicop-Base version 3.04
 installdirs: site
 requires:
   Digest::MD5: 2.09

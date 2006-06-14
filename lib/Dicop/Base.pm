@@ -14,7 +14,7 @@ package Dicop::Base;
 use vars qw($VERSION $BUILD @ISA @EXPORT_OK);
 use strict;
 
-$VERSION = '3.03';	# Current version of this package
+$VERSION = '3.04';	# Current version of this package
 $BUILD = 0;		# Current build of this package
 require 5.008001;	# requires this Perl version or later
 
@@ -452,7 +452,7 @@ __END__
 
 =head1 NAME
 
-Dicop::Base - base for a Dicop HTTP server
+Dicop::Base - basics for a Dicop HTTP server/client
 
 =head1 SYNOPSIS
 

@@ -7,7 +7,7 @@ BEGIN
   {
   unshift @INC, '../lib';
   chdir 't' if -d 't';
-  plan tests => 80;
+  plan tests => 84;
   }
 
 #############################################################################
@@ -237,5 +237,33 @@ is (Dicop::Item::_highest_id('Dicop::Data::Subclass::Sub'), 4, 'highest id 4');
 # error()
 
 is ($item_a->error('test'), 'test', 'setting error works');
+
+#############################################################################
+# new_id() with illegal IDs
+
+# dummy packages
+
+package Foo::Bar;
+use base qw/Dicop::Item/;
+
+package Foo::Bar1;
+use base qw/Dicop::Item/;
+
+package Foo::Bar2;
+use base qw/Dicop::Item/;
+
+package Foo::Bar3;
+use base qw/Dicop::Item/;
+
+package main;
+
+$item = Dicop::Item::new( 'Foo::Bar', { id => undef } );
+is ($item->{id}, '1', 'new_id is 1 for undef');
+$item = Dicop::Item::new( 'Foo::Bar1', { id => '' } );
+is ($item->{id}, '1', 'new_id is 1 for empty');
+$item = Dicop::Item::new( 'Foo::Bar2', { id => 0 } );
+is ($item->{id}, '1', 'new_id is 1 for 0');
+$item = Dicop::Item::new( 'Foo::Bar3', { id => -1 } );
+is ($item->{id}, '1', 'new_id is 1 for invalid IDs');
 
 

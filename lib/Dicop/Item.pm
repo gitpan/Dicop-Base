@@ -30,20 +30,23 @@ use Dicop::Base qw/a2h h2a/;
     {
     my $class = ref(shift);
 
-    $class =~ s/^(\w+)::(\w+)::(\w+)::.*/$1::$2::$3/;	# Data::Object::Foo and Data::Object::Foo::Bar share IDs
+    # Data::Object::Foo and Data::Object::Foo::Bar share IDs
+    $class =~ s/^(\w+)::(\w+)::(\w+)::.*/$1::$2::$3/;
+
     $ids->{$class} = 0 unless defined $ids->{$class};
     my $i = shift;
-    if (defined $i)
+
+    # remove leading zeros
+    $i =~ s/^0+// if defined $i;
+
+    # if we got a valid ID ('', '0a', '0' etc. are not valid), use it
+    if (defined $i && $i =~ /^([a-z]+[0-9]*|[1-9][0-9]*)\z/)
       {
-      # use the supplied id, but keep record of highest
+      # use the supplied id, but keep the record of the highest
       $ids->{$class} = $i if $i ge $ids->{$class};
       return $i;
       }
-    else
-      {
-      $ids->{$class}++; # just increment last used id
-      return $ids->{$class};
-      }
+    ++$ids->{$class};	# just increment last used id and return new
     }
   sub _highest_id
     {
@@ -55,9 +58,9 @@ use Dicop::Base qw/a2h h2a/;
    {
     my $class = ref($_[0]) || $_[0];
     $class =~ s/^(\w+)::(\w+)::(\w+)::.*/$1::$2::$3/;	# Data::Object::Foo and Data::Object::Foo::Bar share IDs
-    my $i = $_[1] || 0;
+    my $i = $_[1] || 1;
 
-    $ids->{$class} ||= 0;
+    $ids->{$class} ||= 1;
     $ids->{$class} = $i if $i > $ids->{$class};
     $ids->{$class};
     }
@@ -151,7 +154,9 @@ sub _init
     }
   foreach my $k (keys %$args)
     {
-    $self->{$k} = $check->_check_field($k,$args->{$k});
+    $self->{$k} = $check->_check_field($k,$args->{$k})
+    # don't override an already set ID
+      if !defined $self->{$k} || $k ne 'id';
     }
   $self;
   }
