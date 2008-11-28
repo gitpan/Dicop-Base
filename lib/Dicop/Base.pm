@@ -1,7 +1,7 @@
 #############################################################################
 # Dicop::Base -- base for a Dicop HTTP server
 #
-# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 #
 # DiCoP is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License version 2 as published by the Free
@@ -14,8 +14,8 @@ package Dicop::Base;
 use vars qw($VERSION $BUILD @ISA @EXPORT_OK);
 use strict;
 
-$VERSION = '3.04';	# Current version of this package
-$BUILD = 0;		# Current build of this package
+$VERSION = '3.05';	# Current version of this package
+$BUILD = 1;		# Current build of this package
 require 5.008001;	# requires this Perl version or later
 
 use Exporter;
@@ -39,14 +39,14 @@ sub read_list
   my $file = shift;
   
   my $list = []; my $line;
-  open DICOP_HANDLE, $file or return crumble ("Can't read $file: $!");
-  while (my $line = <DICOP_HANDLE>)
+  open my $DICOP_HANDLE, "<", $file or return crumble ("Can't read $file: $!");
+  while (my $line = <$DICOP_HANDLE>)
     {
     next if $line =~ /^\s*#/;	# skip comments
     next if $line =~ /^\s*$/;	# skip empty lines
     push @$list, $line;
     }
-  close DICOP_HANDLE or return crumble("Can't close $file: $!");
+  close $DICOP_HANDLE or return crumble("Can't close $file: $!");
   $list;
   }
 
@@ -55,13 +55,13 @@ sub read_file
   my $file = shift;
   
   my $txt = "";
-  open (DICOP_HANDLE, "$file") or return crumble ("Can't read '$file': $!");
+  open (my $DICOP_HANDLE, "<", $file) or return crumble ("Can't read '$file': $!");
   local $/ = "";	# slurp mode
-  while (my $line = <DICOP_HANDLE>)
+  while (my $line = <$DICOP_HANDLE>)
     {
     $txt .= $line;
     }
-  close DICOP_HANDLE or return crumble("Can't close '$file': $!");
+  close $DICOP_HANDLE or return crumble("Can't close '$file': $!");
   \$txt;
   }
 
@@ -69,9 +69,9 @@ sub read_dir
   {
   my $dir = shift;
   
-  opendir (DICOP_HANDLE, "$dir") or return crumble ("Can't read dir '$dir': $!");
-  my @files = readdir (DICOP_HANDLE);
-  closedir DICOP_HANDLE or return crumble("Can't close dir '$dir': $!");
+  opendir (my $DICOP_HANDLE, "$dir") or return crumble ("Can't read dir '$dir': $!");
+  my @files = readdir ($DICOP_HANDLE);
+  closedir $DICOP_HANDLE or return crumble("Can't close dir '$dir': $!");
   \@files;
   }
 
@@ -101,10 +101,10 @@ sub write_file
       }
     }
   
-  open DICOP_HANDLE, ">$file" or return crumble ("Can't write '$file': $!");
-  binmode DICOP_HANDLE;
-  print DICOP_HANDLE $$txt;
-  close DICOP_HANDLE or return crumble("Can't close '$file': $!");
+  open my $DICOP_HANDLE, ">", $file or return crumble ("Can't write '$file': $!");
+  binmode $DICOP_HANDLE;
+  print $DICOP_HANDLE $$txt;
+  close $DICOP_HANDLE or return crumble("Can't close '$file': $!");
 
   return;
   }
@@ -623,7 +623,7 @@ None known yet.
 
 =head1 AUTHOR
 
-(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 
 DiCoP is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License version 2 as published by the Free

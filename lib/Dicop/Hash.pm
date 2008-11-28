@@ -1,7 +1,7 @@
 #############################################################################
 # Dicop::Hash - manage hashes (MD5 etc) for files
 #
-# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 #
 # DiCoP is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License version 2 as published by the Free
@@ -11,7 +11,7 @@
 #############################################################################
 
 package Dicop::Hash;
-$VERSION = 1.05;	# Current version of this package
+$VERSION = 1.06;	# Current version of this package
 require  5.004;		# requires this Perl version or later
 
 use strict;
@@ -98,10 +98,10 @@ sub update
 
   my @stat = stat($self->{_file});
 
-  if (   ($stat[9] != $self->{_modified})
-      || ($stat[7] != $self->{_size}))
+  if ( $self->{_error} ||  				# in case of error, try again
+	($stat[9] != $self->{_modified}) ||		# or if file modified
+	($stat[7] != $self->{_size}))			# or if size changed
     {
-    # rehash, since time stamp is different, or size has changed
     $self->read($self->{_file});			# rehash
     }
   $self;
@@ -205,13 +205,13 @@ cannot be detected. (use inode time to prevent this when possible?)
 
 =head1 AUTHOR
 
-(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 
 DiCoP is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License version 2 as published by the Free
 Software Foundation.
 
-See L<http://www.bsi.de/> for more information.
+See L<http://www.bsi.bund.de/> for more information.
 
 =cut
 

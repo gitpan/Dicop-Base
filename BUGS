@@ -7,7 +7,7 @@
 
 =over 2
 
-=item Net::Server
+=item Net::Server 0.85
 
 When using v0.85 of Net::Server, starting dicopd may emit a warning from
 Net::Server along the lines of:
@@ -15,6 +15,14 @@ Net::Server along the lines of:
 	Couldn't POSIX::setuid to \"$uid\" []
 
 This seems to be spurious and can be ignored.
+
+=item Net::Server 0.97
+
+When using this version (potentially earliers, too), and running the server
+under chroot, the second request will fail because Net::Server tries
+to re-open STDIN and STDERR to /dev/null - which is outside the chroot.
+
+No workaround yet known.
 
 =back
 

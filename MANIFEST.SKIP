@@ -1,0 +1,17 @@
+# This file lists regular expressions that match file/directory names of items
+# that should not be included into MANIFEST when you do a:
+#  make manifest
+# Whith these defined, a make manifest should be safe and must be done after
+# removing, adding or renaming files in the repository.
+.svn/
+blib/
+^diff.pl
+pm_to_blib
+MANIFEST\.(bak|old|org)
+Makefile\.(bak|old|org)
+Makefile\z
+logs/.*\.log
+~\z
+t/target/data/
+\.(a|o|lib|obj|org|new)\z
+^Dicop-Base-

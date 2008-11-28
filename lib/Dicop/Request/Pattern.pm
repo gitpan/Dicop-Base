@@ -1,7 +1,7 @@
 #############################################################################
 # Dicop::Request::Pattern -- an object containing a valid request pattern
 #
-# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 #
 # DiCoP is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License version 2 as published by the Free
@@ -296,7 +296,7 @@ Exports nothing.
 
 Class to represent a pattern that represents a valid request. All requests can be
 checked against this pattern to determine whether they are valid or not. In praxis a
-list of all valid pattersn would be maintained and each request checked against each
+list of all valid patterns would be maintained and each request checked against each
 pattern.
 
 A I<request> in Dicop is simple a message passed between machines like the server,
@@ -521,7 +521,7 @@ None known yet.
 
 =head1 AUTHOR
 
-(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 
 DiCoP is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License version 2 as published by the Free

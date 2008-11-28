@@ -1,5 +1,5 @@
 use ExtUtils::MakeMaker;
-require v5.8.1;
+require 5.008001;
 use strict;
 use lib 'lib';		# if we bundled some modules with the
 			# distribution, try to find these first
@@ -10,7 +10,7 @@ sub MY::metafile {
   my $self = shift;
   if (!eval { require YAML; 1 })
   {
-    warn ("YAML not installed, will not override META.yml");
+    warn ("For developers: YAML not installed, will not override META.yml");
     return $self->SUPER::metafile_target(@_);
   };
 
@@ -40,7 +40,7 @@ sub MY::metafile {
 use Dicop::Base;	# for VERSION and BUILD
 my $version = $Dicop::Base::VERSION;
 # for releases, omit the BETA VERSION
-$version .= "_$Dicop::Base::BUILD" if $Dicop::Base::BUILD > 0;
+$version .= "_$Dicop::Base::BUILD" if $Dicop::Base::BUILD > 1;
 
 # Dicop/Data/Client/LWP.pm needs HTTP::Request, which means we need libwww and
 # thus also HTML::Parser, which in turn needs HTML::Tagset
@@ -55,12 +55,11 @@ WriteMakefile(
 		'Mail::Sendmail' => 0.77,
 		'HTML::Tagset' => 3.03,
 		'HTTP::Request' => 1.24,
-		'Math::BigInt' => 1.77,
-		'Math::String' => 1.27,
+		'Math::BigInt' => 1.88,
+		'Math::String' => 1.28,
 		'Time::HiRes' => 1.2,
 		'File::Spec' => 0.82,
 		'Test::More' => 0.47,
-		'Net::Server' => 0.86,
+		'Net::Server' => 0.97,
     },
-    'PREREQ_FATAL' => 1,
 );

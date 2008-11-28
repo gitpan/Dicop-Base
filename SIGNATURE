@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.53.
+signed via the Module::Signature module, version 0.55.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,38 +14,39 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 5f83176f635b03dae5d480b782a5fa54dcbbbe78 BUGS
-SHA1 1ff0aa2c83c3a97e0b243718c933d01f7f53b98e CHANGES
+SHA1 3bc2b702c1754105fc0239db22e10ba7dee00eb6 BUGS
+SHA1 e25dc60f9c43e6123f967b203b8b4307e5fd41fe CHANGES
 SHA1 8071dc860d2fb03eea53c28542e5b6fc50a1fcfd CHANGES-3.00
 SHA1 7916f4b8f923713ed5407fea76b2aa50ecc94e5b INSTALL
 SHA1 ba74339534569e38ec71285aa16ae3113634facd LICENSE
-SHA1 d16d86d4793b9bdf852e003ce528d26a5174b8fb MANIFEST
-SHA1 9a73587f86cb0e38be58a8052b8a88c0e12edf24 META.yml
-SHA1 bfc612cb73cf62972340c148f021d645db9b491a Makefile.PL
-SHA1 fba57fde1314dcfeab6659945f73308e66182bb1 README
+SHA1 f884092f66c80c17630b9987b363b31ba49a0e75 MANIFEST
+SHA1 daa1af81b67344d0c594b8d230891f30b8df7499 MANIFEST.SKIP
+SHA1 ed8aa6273ffa3243dc9571ab60a2fed3f9e64d6c META.yml
+SHA1 b200b1adce03120118810c8cc2bc901a38bb814d Makefile.PL
+SHA1 6924bfc4c900556bf8bc1f428737aa413916341e README
 SHA1 dd9e06f90c2b93ba07a51bffbe73220115299a67 README.win32
 SHA1 0c789ae94d0ba5cab8a6ee00b1e37f93a7733e32 TODO
 SHA1 b149da99429fbf65c8d51aa484ad9f77f6aa3633 build/README
 SHA1 b4ad810126c3f7688cdd91a757e2f39f3b8c9173 build/wcr
 SHA1 35e4359f8ec7659158e149eb7d71c11d61274d33 dicop.asc
-SHA1 d39445cb91ce57eee0b25d0ca37e337624153b4e lib/Dicop/Base.pm
-SHA1 2b0d5c98ce4d2a7c27840995b61d2d6bdbb102d9 lib/Dicop/Cache.pm
+SHA1 c096b2ed83b41549c755ce76b92a282473dcb440 lib/Dicop/Base.pm
+SHA1 2aac4ba68a496d0556d088dfdc604ab7c5208f8a lib/Dicop/Cache.pm
 SHA1 4f045b181b92c62fcfe93615a55545e322ec9f47 lib/Dicop/Client/LWP.pm
 SHA1 513c0a71e0b53f39e7dae1badc435efcb80ed2ed lib/Dicop/Client/wget.pm
 SHA1 7ed410e738a4c5d9524ca431bcda6941d250969b lib/Dicop/Config.pm
 SHA1 8a02ac7dc2ec211a79fbd20a2c787fa3779ab572 lib/Dicop/Connect.pm
-SHA1 401ad8b5cee028c7aa88732093b8ac011396658f lib/Dicop/Event.pm
+SHA1 7c68f48066ec73a9d08bf6283ae87094261c4837 lib/Dicop/Event.pm
 SHA1 f2f855a0d4efaee87b2214ccfd10380a637b90a4 lib/Dicop/Handler.pm
-SHA1 16fe80ee947883079ee9eafbd89c160099c5a360 lib/Dicop/Hash.pm
+SHA1 0fc474319e5f30c35d3cb2552d2abd2d4adf6e64 lib/Dicop/Hash.pm
 SHA1 b5decf777f7703108d4f3ec48d3f3604204053e4 lib/Dicop/Item.pm
 SHA1 19e6221ba015d0d1023bc85d59f4187d4d853af6 lib/Dicop/Item/Template.pm
 SHA1 d9ffc9522fb7e4464f3808ab5c5fd3ac035e5172 lib/Dicop/Mail.pm
 SHA1 a3037daf278f20e7c31005b7269eb4abb398c5b9 lib/Dicop/Request.pm
-SHA1 1dc0e4aa411960365b076cd2d267b809bb7c58d6 lib/Dicop/Request/Pattern.pm
+SHA1 1d5c6089284df597a73b882d1358ee20bcf93159 lib/Dicop/Request/Pattern.pm
 SHA1 447d576a618586061a44c0a85e85eb5ca4b2ad59 lib/Dicop/Security.pm
 SHA1 8549c755217767784d24bb14f78a5f926cd1bc6b lib/basics
-SHA1 e1f69458600b97e283f60bbbe33f3cee3008c8fc lib/daemon
-SHA1 973f828b7cb4e6b35d7a33fd20f0a956b08cc96e t/basepm.t
+SHA1 8596c08ce821cf9efb66fcb1a0b6b304fb04da7b lib/daemon
+SHA1 aff15531aac2d3f1a00bc465e676e2818e0ee4a1 t/basepm.t
 SHA1 42c1392251c69e88c3f107031e8f1e03d2d53386 t/basics.t
 SHA1 4c4ff403bf2a70d8b291e6935c10f673aeb09257 t/cachepm.t
 SHA1 53cf0223a65bfc5f0fb5d6163807243aafb4f19e t/client.cfg
@@ -87,7 +88,7 @@ SHA1 1e89701bbb2325f34b6ed964b3b61da27b3ccdf7 t/tpl/setappform.tpl
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.2 (GNU/Linux)
 
-iD8DBQFEkAG8YmqMGoA0pxgRAhAkAJ96Y25BPgIWVS6WWrZHqKL3ECP/AgCgiNSs
-a3jHWuPxLEp+R82m/H9YEQc=
-=MGdE
+iD8DBQFJLnZ4YmqMGoA0pxgRAoS8AKCgGkHbaB5qzRAjTip3idTOs2hBuACfVtGx
+YKn/FKQtxWR3mk3KTNfxRT0=
+=+E6L
 -----END PGP SIGNATURE-----

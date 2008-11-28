@@ -8,6 +8,19 @@ This document details the complete changes from v3.01 onwards.
 See the CHANGES-3.01 file and the CHANGES files in the DiCoP-Server package
 for the full version history.
 
+=head2 2008-04-15 (Base v3.05)
+
+=over 2
+
+=item fixed
+
+	prerequisites and tests adapated
+	in case of an error, files are re-hashed (instead of simple failing
+	with the same old error message again)
+	Cache.pm no longer warns under newer BigInts
+
+=back
+
 =head2 2006-06-14 (Base v3.04)
 
 =over 2

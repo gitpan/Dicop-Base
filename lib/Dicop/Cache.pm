@@ -1,7 +1,7 @@
 #############################################################################
 # Dicop::Cache -- manage caches with timeout
 #
-# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+# (c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 #
 # DiCoP is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License version 2 as published by the Free
@@ -12,12 +12,12 @@
 
 package Dicop::Cache;
 use vars qw($VERSION);
-$VERSION = 1.03;	# Current version of this package
+$VERSION = 1.04;	# Current version of this package
 require  5.008001;	# requires this Perl version or later
 
 use strict;
 use Dicop::Base;		# for time()
-use Math::BigInt lib => 'GMP';	# for counters
+use Math::BigInt try => 'GMP';	# for counters
 
 sub new
   {
@@ -470,7 +470,7 @@ the oldest (granularity is one second).
 
 =head1 AUTHOR
 
-(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2006
+(c) Bundesamt fuer Sicherheit in der Informationstechnik 1998-2008
 
 DiCoP is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License version 2 as published by the Free

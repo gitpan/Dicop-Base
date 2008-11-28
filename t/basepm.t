@@ -149,6 +149,9 @@ for (my $i = 0; $i < 255; $i++)
 
 my $files = Dicop::Base::read_dir("test-dir");
 
+# skip .svn files if present
+@$files = grep(!/^\.svn\z/,@$files);
+
 is (scalar @$files, 4, '. .. foo bar');
 is (join(":", sort @$files), '.:..:bar:foo', "all files/dir found");
 

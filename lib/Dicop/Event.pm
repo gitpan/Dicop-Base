@@ -71,9 +71,9 @@ sub logger
     }
   $txt =~ s/\n/ /;		# remove \n from text
   Dicop::Event::lock('dicop_log_lock');
-  open LOGFILE, ">>$logfile" or (die "Can't append to $logfile: $!");
-  print LOGFILE $txt,"\n";
-  close LOGFILE;
+  open my $LOGFILE, ">>", $logfile or (die "Can't append to $logfile: $!");
+  print $LOGFILE $txt,"\n";
+  close $LOGFILE;
   Dicop::Event::unlock('dicop_log_lock');
   }
 
@@ -128,9 +128,9 @@ sub load_messages
   my $file = shift;
   my $log = shift;
 
-  open MSGFILE, $file or crumble ("Can not read $file: $!",$log) and return;
+  open my $MSGFILE, "<", $file or crumble ("Can not read $file: $!",$log) and return;
   local $/ = "\n";	# v5.6.0 seems to destroy this sometimes
-  while (<MSGFILE>)
+  while (<$MSGFILE>)
     {
     next if /^\s*(#|$)/;	# skip comments and empty lines
     crumble ('Invalid line in message file $file',$log)
@@ -140,7 +140,7 @@ sub load_messages
     $msg =~ s/\s+$//;			# strip trailing spaces
     $message->{$code} = $msg;
     }
-  close MSGFILE;
+  close $MSGFILE;
   1;					# okay
   }
 

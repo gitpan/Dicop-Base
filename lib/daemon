@@ -209,7 +209,7 @@ sub accept {
 	{
 	# get the socket
 	my $s = *$sock;
-	# and it's flags
+	# and its flags
 	my $flags = fcntl( $s, F_GETFL, 0)
 	  or die "Cannot get flags for the socket $s: $!\n";
 	# set it to non-blocking
